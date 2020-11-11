@@ -12,15 +12,22 @@ import {updateNewPostText} from "./redux/state";
 const App = (props) => {
 
 
+
+
     return (
+
+
 
             <div className="app-wrapper">
                 <Header/>
                 <Navbar  state ={props.state.sitebar}/>
 
                 <div className="app-wrapper-content">
-                    <Route path={'/dialogs'} render={()=> <Dialogs state={props.state.dialogsPage}/> }/>
-                    <Route path={'/profile'}  render={()=> <Profile state={props.state.profilePage} dispatch={props.dispatch}  /> }/>
+                    <Route path={'/dialogs'} render={()=> <Dialogs  store={props.store} /> }/>
+                    <Route path={'/profile'}  render={()=>
+                        <Profile store={props.store}
+                                 dispatch={props.dispatch} /> } />
+
                     <Route path={'/news'}  component={News}/>
                     <Route path={'/music'}  component={Music}/>
                     <Route path={'/settings'}  component={Settings}/>
