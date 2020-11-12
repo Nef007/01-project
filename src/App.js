@@ -7,20 +7,15 @@ import {BrowserRouter, Route} from "react-router-dom";
 import News from "./components/News/News";
 import Music from "./components/Music/Music";
 import Settings from "./components/Settings/Settings";
-import {updateNewPostText} from "./redux/state";
+import {updateNewPostText} from "./redux/store";
 
 const App = (props) => {
 
-
-
-
     return (
-
-
 
             <div className="app-wrapper">
                 <Header/>
-                <Navbar  state ={props.state.sitebar}/>
+                <Navbar  state ={props.state.sidebar}/>
 
                 <div className="app-wrapper-content">
                     <Route path={'/dialogs'} render={()=> <Dialogs  store={props.store} /> }/>
