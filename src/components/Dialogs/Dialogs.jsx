@@ -4,6 +4,7 @@ import DialogItem from "./DialogItem/DialogsItem";
 import Message from "./Message/Message";
 import React from 'react'
 import {sendMessageCrator, updateNewMessageBodyCreator} from "../../redux/dialogs-reducer";
+import { Redirect } from "react-router-dom";
 
 const Dialogs = (props) => {
 
@@ -29,7 +30,7 @@ const Dialogs = (props) => {
 
     let newMessageBody = state.newMessageBody
 
-
+if (!props.isAuth) return <Redirect to={'/login'} />;
 
     return (
         <div className={s.dialogs}>
@@ -43,8 +44,7 @@ const Dialogs = (props) => {
                     <div>
                         <textarea value={newMessageBody}
                             onChange={onNewMessageChange}
-                                  placeholder='Введите текст'
-                        ></textarea>
+                                  placeholder='Введите текст'></textarea>
                     </div>
                     <div>
                         <button onClick={onSendMessageClick}>Add messages</button>
