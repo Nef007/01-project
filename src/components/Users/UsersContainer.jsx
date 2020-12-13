@@ -16,29 +16,14 @@ class UsersContainer extends React.Component {
     componentDidMount() {
 
         this.props.getUsers(this.props.currentPage, this.props.pageSize);
-        //     this.props.toggleIsFetching(true)
-        //
-        // userAPI.getUsers(this.props.currentPage, this.props.pageSize).then(data => {
-        //     this.props.toggleIsFetching(false)
-        //     this.props.setUsers(data.items);
-        //     this.props.setTotalUserCount(data.totalCount)
-        //
-        // });
+
     }
 
     onPageChanges = (pageNumber) => {
 
         this.props.getUsers(pageNumber, this.props.pageSize);
 
-
         this.props.setCurrentPage(pageNumber)
-        // this.props.toggleIsFetching(true)
-        //
-        // userAPI.getUsers(pageNumber, this.props.pageSize).then(data => {
-        //     this.props.toggleIsFetching(false)
-        //     this.props.setUsers(data.items)
-        // });
-
 
     }
 
@@ -75,32 +60,6 @@ let mapStateToProps = (state) => {
     }
 
 }
-
-// let mapDispatchToProps = (dispatch) => {
-//
-//     return {
-//         follow: (userId) => {
-//             dispatch(followAC(userId))
-//         },
-//         unfollow: (userId) => {
-//             dispatch(unfollowAC(userId))
-//         },
-//         setUsers: (users) => {
-//             dispatch(setUsersAC(users))
-//         },
-//         setCurrentPage: (pageNumber) => {
-//             dispatch(setCurrentPageAC(pageNumber))
-//         },
-//         setTotalUserCount: (totalCount) => {
-//             dispatch(setUsersTotalCountAC(totalCount))
-//         },
-//
-//         toggleIsFetching:(isFetching) => {
-//             dispatch(toggleIsFetchingAC(isFetching))
-//         }
-//     }
-// }
-
 
 export default connect(mapStateToProps, {
     follow, unfollow,
