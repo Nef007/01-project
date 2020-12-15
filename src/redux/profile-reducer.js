@@ -1,8 +1,9 @@
-import {userAPI} from "../api/api";
+import {profileAPI, userAPI} from "../api/api";
 
 const ADD_POST = 'ADD-POST';
 const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT';
 const SET_USER_PROFILE= 'SET_USER_PROFILE';
+const SET_STATUS= 'SET_STATUS';
 
 let initialState = {
     posts: [
@@ -10,7 +11,8 @@ let initialState = {
         {id: 2, message: 'It\'s my first post', likesCount: 30},
     ],
     newPostText: "Dkfl",
-    profile: null
+    profile: null,
+    status: ""
 
 };
 
@@ -34,6 +36,12 @@ let initialState = {
            }
 
         }
+        case SET_STATUS: {
+           return  {...state,
+               status: action.status
+           }
+
+        }
 
         case SET_USER_PROFILE: {
             return {...state, profile: action.profile}
@@ -47,11 +55,39 @@ let initialState = {
 
 export const addPostActionCreator = () => ({type: ADD_POST})
 export const setUsersProfile = (profile) => ({type: SET_USER_PROFILE, profile})
+export const setStatus= (status) => ({type: SET_STATUS, status})
+
 export  const getUserProfile = (userId) => (dispath) => {
+
     userAPI.getProfile(userId).then(response => {
 
        dispath(setUsersProfile(response.data));
 
+
+    });
+
+
+}
+
+export  const getStatus = (userId) => (dispath) => {
+
+    profileAPI.getStatus(userId).then(response => {
+
+       dispath(setStatus(response.data));
+
+
+    });
+
+
+}
+export  const updateStatus = (status) => (dispath) => {
+
+    profileAPI.updateStatus(status).then(response => {
+
+        if (response.data.resultCode === 0 ) {
+
+            dispath(setStatus(status));
+        }
 
     });
 
