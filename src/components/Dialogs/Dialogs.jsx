@@ -4,21 +4,16 @@ import DialogItem from "./DialogItem/DialogsItem";
 import Message from "./Message/Message";
 import React from 'react'
 import {sendMessageCrator, updateNewMessageBodyCreator} from "../../redux/dialogs-reducer";
-import { Redirect } from "react-router-dom";
+import {Redirect} from "react-router-dom";
+import {Form, Field }  from "react-final-form";
 
 const Dialogs = (props) => {
 
     let state = props.dialogsPage
 
+    const onSubmit = (values) => {
 
-
-    let onSendMessageClick = () => {
-        props.sendMessage();
-
-    }
-    let onNewMessageChange = (e) => {
-       let body = e.target.value;
-       props.updateNewMessageBody(body);
+        props.sendMessage(values.newMessageBody);
 
     }
 
@@ -28,9 +23,10 @@ const Dialogs = (props) => {
     let messagesElements = state.messages
         .map(m => <Message message={m.message}/>)
 
-    let newMessageBody = state.newMessageBody
 
-if (!props.isAuth) return <Redirect to={'/login'} />;
+    if (!props.isAuth) return <Redirect to={'/login'}/>;
+
+
 
     return (
         <div className={s.dialogs}>
@@ -42,18 +38,36 @@ if (!props.isAuth) return <Redirect to={'/login'} />;
 
                 <div>
                     <div>
-                        <textarea value={newMessageBody}
-                            onChange={onNewMessageChange}
-                                  placeholder='Введите текст'></textarea>
+                        <AddMessageForm onSubmit={onSubmit} />
                     </div>
-                    <div>
-                        <button onClick={onSendMessageClick}>Add messages</button>
-                    </div>
+
                 </div>
             </div>
 
         </div>
     )
+}
+
+
+
+const AddMessageForm = (props) => {
+
+    return <Form
+        onSubmit={props.onSubmit}
+        render={({handleSubmit}) => (
+            <form onSubmit={handleSubmit}>
+                <div>
+                    <Field component="textarea" name="newMessageBody" placeholder="Введите текст"/>
+                </div>
+                <div>
+                    <button>Отправить</button>
+                </div>
+
+            </form>
+
+        )}
+    />
+
 }
 
 export default Dialogs

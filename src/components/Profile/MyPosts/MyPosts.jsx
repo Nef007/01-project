@@ -2,42 +2,56 @@ import s from './MyPosts.module.css';
 import Post from './Post/Post';
 import React from 'react'
 import {addPostActionCreator, updateNewPostTextActionCreator} from "../../../redux/profile-reducer";
+import {Field, Form} from "react-final-form";
 
 
 
 const MyPosts = (props) => {
 
 
-
     let postsElement = props.posts.map(p => <Post message={p.message} like_count={p.likesCount}/>)
-    let newPostElement= React.createRef()
+    let newPostElement = React.createRef()
 
-    let onAddPost = () => {
-        props.addPost();
 
-    }
-    let onPostChange =() => {
-        let text = newPostElement.current.value;
-        props.updateNewPostText(text);
+    const onAddPost = (values) => {
+        debugger
+        props.addPost(values.newPostText);
     }
 
-
-    return <div className={s.postsBlock}>
-        <h3>My post</h3>
-        <div>
+        return <div className={s.postsBlock}>
             <div>
-                <textarea onChange={onPostChange} ref={newPostElement}  value={props.newPostText}/>
+                <h3>My post</h3>
+                <AddNewPostForm onSubmit={onAddPost}/>
             </div>
-            <div>
-                <button onClick={onAddPost}>Add post</button>
+            <div className={s.posts}>
+                {postsElement}
             </div>
         </div>
-        <div className={s.posts}>
-            {postsElement}
-        </div>
-    </div>
 
 
-}
+    }
+
+
+const AddNewPostForm = (props) => {
+
+        return <Form
+            onSubmit={props.onSubmit}
+            render={({ handleSubmit, form, submitting, pristine, values }) => (
+                <form onSubmit={handleSubmit} >
+
+                        <div>
+                            <Field component="textarea" name="newPostText" />
+                        </div>
+                        <div>
+                            <button>Add post</button>
+                        </div>
+                </form>
+            )}
+        />
+
+    }
+
+
+
 
 export default MyPosts;
