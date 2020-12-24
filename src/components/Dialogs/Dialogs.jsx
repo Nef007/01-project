@@ -6,6 +6,8 @@ import React from 'react'
 import {sendMessageCrator, updateNewMessageBodyCreator} from "../../redux/dialogs-reducer";
 import {Redirect} from "react-router-dom";
 import {Form, Field }  from "react-final-form";
+import {Textarea} from "../common/FormsControl/FormControls";
+import {maxLengthCreator, required} from "../../utils/validators/validators";
 
 const Dialogs = (props) => {
 
@@ -48,6 +50,8 @@ const Dialogs = (props) => {
     )
 }
 
+const composeValidators = (...validators) => value =>
+    validators.reduce((error, validator) => error || validator(value), undefined)
 
 
 const AddMessageForm = (props) => {
@@ -57,7 +61,8 @@ const AddMessageForm = (props) => {
         render={({handleSubmit}) => (
             <form onSubmit={handleSubmit}>
                 <div>
-                    <Field component="textarea" name="newMessageBody" placeholder="Введите текст"/>
+                    <Field component={Textarea} name="newMessageBody" placeholder="Введите текст"
+                           validate={composeValidators(required, maxLengthCreator(50))}/>
                 </div>
                 <div>
                     <button>Отправить</button>

@@ -3,6 +3,8 @@ import Post from './Post/Post';
 import React from 'react'
 import {addPostActionCreator, updateNewPostTextActionCreator} from "../../../redux/profile-reducer";
 import {Field, Form} from "react-final-form";
+import {maxLengthCreator, required} from "../../../utils/validators/validators";
+import {Textarea} from "../../common/FormsControl/FormControls";
 
 
 
@@ -32,6 +34,10 @@ const MyPosts = (props) => {
     }
 
 
+const composeValidators = (...validators) => value =>
+    validators.reduce((error, validator) => error || validator(value), undefined)
+
+
 const AddNewPostForm = (props) => {
 
         return <Form
@@ -40,7 +46,9 @@ const AddNewPostForm = (props) => {
                 <form onSubmit={handleSubmit} >
 
                         <div>
-                            <Field component="textarea" name="newPostText" />
+                            <Field component={Textarea} name="newPostText"
+                                   validate={composeValidators(required, maxLengthCreator(10))}
+                            />
                         </div>
                         <div>
                             <button>Add post</button>
