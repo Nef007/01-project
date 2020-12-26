@@ -93,11 +93,12 @@ export const toggleIsFetching= (isFetching) => ({type: TOGGLE_IS_FETCHING, isFet
 export const toggleFollowingProgress= (isFetching, userId) => ({type: TOGGLE_IS_FOLLOWING_PROGRESS, isFetching, userId})
 
 
-export const getUsers = (currentPage, pageSize) => {
+export const getUsersSite = (currentPage, pageSize) => {
 
     return (dispath) => {
 
     dispath(toggleIsFetching(true));
+    dispath(setCurrentPage(currentPage));
 
     userAPI.getUsers(currentPage, pageSize).then(data => {
         dispath( toggleIsFetching(false));

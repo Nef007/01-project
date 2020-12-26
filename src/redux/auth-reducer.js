@@ -40,7 +40,7 @@ let initialState = {
 export const setAuthUserData= (userId, email, login, isAuth, messageerror= null) => ({type: SET_USER_DATA, payload: {userId, email, login, isAuth, messageerror}})
 export const setMessageError= (messageerror) => ({type: SET_MESSAGE_ERROR, messageerror})
 export const getAuthUserData = () => (dispath) => {
-    authAPI.me().then(response => {
+   return  authAPI.me().then(response => {
 
         if (response.data.resultCode === 0) {
 
@@ -49,6 +49,8 @@ export const getAuthUserData = () => (dispath) => {
         }
 
     });
+
+
 
 }
 export const login = (email, password, rememberMe) => (dispath) => {
