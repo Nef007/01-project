@@ -1,4 +1,4 @@
-import {userAPI} from "../api/api";
+import {userAPI as usersAPI, userAPI} from "../api/api";
 
 const FOLLOW = 'FOLLOW';
 const UNFOLLOW = 'UNFOLLOW';
@@ -95,54 +95,46 @@ export const toggleFollowingProgress= (isFetching, userId) => ({type: TOGGLE_IS_
 
 export const getUsersSite = (currentPage, pageSize) => {
 
-    return (dispath) => {
+    return async  (dispath) => {
 
     dispath(toggleIsFetching(true));
     dispath(setCurrentPage(currentPage));
 
-    userAPI.getUsers(currentPage, pageSize).then(data => {
+      let data = await   userAPI.getUsers(currentPage, pageSize)
         dispath( toggleIsFetching(false));
         dispath(setUsers(data.items));
         dispath(setTotalUserCount(data.totalCount));
 
-    });
+
 
 }}
 
+const followUnfollowFlow = async (dispatch, userId, apiMethod, actionCreator) => {
+
+        dispatch(toggleFollowingProgress(true, userId));
+        let response = await  apiMethod(userId)
+        if (response.data.resultCode === 0) {
+            dispatch( actionCreator(userId))
+        }
+       dispatch(toggleFollowingProgress(false, userId));
+
+    }
+
 export const follow = (userId) => {
 
-    return (dispath) => {
-       dispath(toggleFollowingProgress(true, userId));
+    return async (dispath) => {
 
-
-        userAPI.follow(userId).then(response => {
-
-            if (response.data.resultCode === 0) {
-               dispath( followSuccess(userId))
-
-            }
-            dispath(toggleFollowingProgress(false, userId));
-
-
-        });
+        followUnfollowFlow(dispath, userId, usersAPI.follow.bind(usersAPI), followSuccess)
 
 }}
 export const unfollow = (userId) => {
 
-    return (dispath) => {
-       dispath(toggleFollowingProgress(true, userId));
+    return async (dispath) => {
 
 
-        userAPI.unfollow(userId).then(response => {
-
-            if (response.data.resultCode === 0) {
-               dispath(unfollowSuccess(userId))
-
-            }
-            dispath(toggleFollowingProgress(false, userId));
+        followUnfollowFlow(dispath, userId, userAPI.unfollow.bind(usersAPI),unfollowSuccess);
 
 
-        });
 
 }}
 

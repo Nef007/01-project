@@ -39,22 +39,21 @@ let initialState = {
 
 export const setAuthUserData= (userId, email, login, isAuth, messageerror= null) => ({type: SET_USER_DATA, payload: {userId, email, login, isAuth, messageerror}})
 export const setMessageError= (messageerror) => ({type: SET_MESSAGE_ERROR, messageerror})
-export const getAuthUserData = () => (dispath) => {
-   return  authAPI.me().then(response => {
+export const getAuthUserData = () => async (dispath) => {
+  let response = await authAPI.me()
 
         if (response.data.resultCode === 0) {
 
             let {id,email, login} = response.data.data;
            dispath(setAuthUserData(id,email, login, true));
-        }
+        };
 
-    });
 
 
 
 }
-export const login = (email, password, rememberMe) => (dispath) => {
-    authAPI.login(email, password, rememberMe).then(response => {
+export const login = (email, password, rememberMe) => async (dispath) => {
+  let response = await  authAPI.login(email, password, rememberMe)
 
         if (response.data.resultCode === 0) {
             dispath(getAuthUserData())
@@ -64,17 +63,17 @@ export const login = (email, password, rememberMe) => (dispath) => {
            dispath(setMessageError(messageerror))
         }
 
-    });
+
 
 }
-export const logout = () => (dispath) => {
-    authAPI.logout().then(response => {
+export const logout = () => async (dispath) => {
+    let response = await  authAPI.logout()
 
         if (response.data.resultCode === 0) {
             dispath(setAuthUserData(null,null, null, false));
         }
 
-    });
+
 
 }
 
