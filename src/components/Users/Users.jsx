@@ -1,9 +1,10 @@
 import React from 'react'
-import styles from "./users.module.css";
+import styles from "./Users.module.css";
 import noavatar from "../../assets/images/noavatar.jpeg";
 import {NavLink} from "react-router-dom";
 import * as axios from "axios";
 import {userAPI} from "../../api/api";
+import Paginator from "../common/Paginator/Paginator";
 
 ;
 
@@ -19,12 +20,8 @@ let Users = (props) => {
 
     return <div>
         <div>
-            {pages.map(p => {
-                return <span className={props.currentPage === p && styles.selectPage}
-                             onClick={(e) => {
-                                 props.onPageChanges(p)
-                             }}> {p} </span>
-            })}
+          <Paginator currentPage={props.currentPage} onPageChanges={props.onPageChanges}
+            totalItemsCount={props.totalUserCount} pageSize={props.pageSize} />
         </div>
         {
             props.users.map(u => <div key={u.id}>
