@@ -3,12 +3,24 @@ import Preloader from "../../common/preloader/Preloader";
 import ProfileStatus from "./ProfileStatus"
 import ProfileStatusWithHook from "./ProfileStatusWithHook";
 import noavatar from "../../../assets/images/noavatar.jpeg";
+import {useState} from "react";
+import ProfileDataForm from "./ProfileDataForm";
 
 const ProfileInfo = (props) => {
+
+    let [editMode,setEditMode] =  useState(false);
+    let [status,setStatus] =  useState(props.status);
 
         if (!props.profile) {
             return <Preloader/>
         }
+
+
+         const onSubmit = (values) => {
+        props.saveProfile(values)
+             setEditMode(false)
+
+    }
 
 
         const onMainPhotoSelected = (e) => {
@@ -28,24 +40,43 @@ const ProfileInfo = (props) => {
             <img src={props.profile.photos.large || noavatar} className={s.mainPhoto}/>
             {props.isOwner && <input type={"file"} onChange={onMainPhotoSelected}/> }
 
-
             <ProfileStatusWithHook status ={props.status} updateStatus={props.updateStatus}/>
 
+            {editMode ? <ProfileDataForm onSubmit={onSubmit} profile={props.profile} /> :  <ProfileData  goToEditMode={() => {setEditMode(true)}} profile={props.profile} isOwner={props.isOwner}/> }
 
-            <div>{props.profile.aboutMe}</div>
-            <div><h3>Контакты:</h3></div>
-            <div>facebook: {props.profile.contacts.facebook} </div>
-            <div>github: {props.profile.contacts.github} </div>
-            <div>instagram: {props.profile.contacts.instagram} </div>
-            <div>mainLink: {props.profile.contacts.mainLink} </div>
-            <div>twitter: {props.profile.contacts.twitter} </div>
-            <div>vk: {props.profile.contacts.vk} </div>
-            <div>website: {props.profile.contacts.website} </div>
-            <div>youtube: {props.profile.contacts.youtube} </div>
+
+
         </div>
 
     </div>)
 
+}
+const ProfileData = (props) => {
+    return   <div>
+        {props.isOwner && <div><button onClick={props.goToEditMode}>edit</button></div>}
+        <div><b>Full name</b>: {props.profile.fullName}</div>
+        <div><b>Looking for a job</b>: {props.profile.lookingForAJob ? "yes" : "no"}</div>
+        {props.profile.lookingForAJob &&
+        <div>
+            <b>My professional skils</b>: {props.profile.lookingForAJobDescription }
+        </div>}
+
+        <div><b>About me</b>:{props.profile.aboutMe}</div>
+
+
+        <div>
+            <b>Contacts</b>: {Object.keys(props.profile.contacts).map(key => {
+            return <Contact contactTitle={key} ContactValue={props.profile.contacts[key]} />
+        })}
+        </div>
+
+    </div>
+}
+
+
+const Contact = ({contactTitle, ContactValue}) => {
+
+    return <div className={s.contact}><b>{contactTitle}</b>: {ContactValue}</div>
 }
 
 export default ProfileInfo;
