@@ -1,10 +1,12 @@
 import {profileAPI, userAPI} from "../api/api";
 
+
 const ADD_POST = 'ADD-POST';
 const SET_USER_PROFILE = 'SET_USER_PROFILE';
 const SET_STATUS = 'SET_STATUS';
 const DELETE_POST = 'DELETE_POST';
 const SAVE_PHOTO_SUCCESS = 'SAVE_PHOTO_SUCCESS';
+const SET_MESSAGE_ERROR = 'SET_MESSAGE_ERROR';
 
 let initialState = {
     posts: [
@@ -13,7 +15,8 @@ let initialState = {
     ],
     newPostText: "Dkfl",
     profile: null,
-    status: ""
+    status: "",
+    messageerror: null
 
 };
 
@@ -57,6 +60,13 @@ const profileReducer = (state = initialState, action) => {
         case SAVE_PHOTO_SUCCESS: {
             return {...state, profile : {...state.profile, photos: action.photos }}
         }
+
+        case SET_MESSAGE_ERROR:
+
+            return { ...state,
+                messageerror: action.messageerror,
+
+            }
         default:
             return state;
     }
@@ -68,6 +78,7 @@ export const setUsersProfile = (profile) => ({type: SET_USER_PROFILE, profile})
 export const setStatus = (status) => ({type: SET_STATUS, status})
 export const deletePost = (postId) => ({type: DELETE_POST, postId})
 export const savePhotoSuccess = (photos) => ({type: SAVE_PHOTO_SUCCESS, photos})
+export const setMessageError= (messageerror=null) => ({type: SET_MESSAGE_ERROR, messageerror})
 
 export const getUserProfile = (userId) => async (dispath) => {
 
@@ -116,6 +127,12 @@ export const saveProfile = (profile) => async (dispath, getState) => {
     if (response.data.resultCode === 0) {
 
        dispath(getUserProfile(userId));
+    }  else {
+        debugger
+        let messageerror = response.data.messages.length > 0 ? response.data.messages[0] : "Some error"
+        dispath(setMessageError(messageerror))
+        return Promise.reject(messageerror)
+
     }
 
 

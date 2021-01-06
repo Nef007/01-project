@@ -10,6 +10,7 @@ const Profile = (props) => {
 
     return <div>
         <ProfileInfo
+            messageerror={props.messageerror}
             saveProfile={props.saveProfile}
             savePhoto={props.savePhoto}
             isOwner={props.isOwner}

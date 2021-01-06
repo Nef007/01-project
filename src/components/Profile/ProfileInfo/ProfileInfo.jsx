@@ -5,6 +5,7 @@ import ProfileStatusWithHook from "./ProfileStatusWithHook";
 import noavatar from "../../../assets/images/noavatar.jpeg";
 import {useState} from "react";
 import ProfileDataForm from "./ProfileDataForm";
+import Profile from "../Profile";
 
 const ProfileInfo = (props) => {
 
@@ -16,9 +17,9 @@ const ProfileInfo = (props) => {
         }
 
 
-         const onSubmit = (values) => {
-        props.saveProfile(values)
-             setEditMode(false)
+         const onSubmit = async (values) => {
+       await props.saveProfile(values)
+            setEditMode(false)
 
     }
 
@@ -42,7 +43,7 @@ const ProfileInfo = (props) => {
 
             <ProfileStatusWithHook status ={props.status} updateStatus={props.updateStatus}/>
 
-            {editMode ? <ProfileDataForm onSubmit={onSubmit} profile={props.profile} /> :  <ProfileData  goToEditMode={() => {setEditMode(true)}} profile={props.profile} isOwner={props.isOwner}/> }
+            {editMode ? <ProfileDataForm  messageerror={props.messageerror} onSubmit={onSubmit} profile={props.profile} /> :  <ProfileData  goToEditMode={() => {setEditMode(true)}} profile={props.profile} isOwner={props.isOwner}/> }
 
 
 
@@ -66,7 +67,7 @@ const ProfileData = (props) => {
 
         <div>
             <b>Contacts</b>: {Object.keys(props.profile.contacts).map(key => {
-            return <Contact contactTitle={key} ContactValue={props.profile.contacts[key]} />
+            return <Contact key={key} contactTitle={key} ContactValue={props.profile.contacts[key]} />
         })}
         </div>
 

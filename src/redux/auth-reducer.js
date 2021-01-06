@@ -37,7 +37,7 @@ let initialState = {
 
 
 
-export const setAuthUserData= (userId, email, login, isAuth, messageerror= null) => ({type: SET_USER_DATA, payload: {userId, email, login, isAuth, messageerror}})
+export const setAuthUserData= (userId, email, login, isAuth, messageerror) => ({type: SET_USER_DATA, payload: {userId, email, login, isAuth, messageerror}})
 export const setMessageError= (messageerror) => ({type: SET_MESSAGE_ERROR, messageerror})
 export const getAuthUserData = () => async (dispath) => {
   let response = await authAPI.me()
