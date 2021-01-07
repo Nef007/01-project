@@ -24,7 +24,7 @@ let initialState = {
                 }
                 case SET_MESSAGE_ERROR:
 
-            return { ...state.messageerror,
+            return { ...state,
                 messageerror: action.messageerror,
 
                 }

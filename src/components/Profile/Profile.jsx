@@ -10,6 +10,7 @@ const Profile = (props) => {
 
     return <div>
         <ProfileInfo
+            editModeUpdate={props.editModeUpdate}
             messageerror={props.messageerror}
             saveProfile={props.saveProfile}
             savePhoto={props.savePhoto}

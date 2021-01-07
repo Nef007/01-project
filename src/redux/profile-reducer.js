@@ -7,6 +7,7 @@ const SET_STATUS = 'SET_STATUS';
 const DELETE_POST = 'DELETE_POST';
 const SAVE_PHOTO_SUCCESS = 'SAVE_PHOTO_SUCCESS';
 const SET_MESSAGE_ERROR = 'SET_MESSAGE_ERROR';
+const SET_EDITMOD_UPDATE = 'SET_EDITMOD_UPDATE';
 
 let initialState = {
     posts: [
@@ -16,7 +17,8 @@ let initialState = {
     newPostText: "Dkfl",
     profile: null,
     status: "",
-    messageerror: null
+    messageerror: null,
+    editModeUpdate: null
 
 };
 
@@ -58,13 +60,21 @@ const profileReducer = (state = initialState, action) => {
         }
 
         case SAVE_PHOTO_SUCCESS: {
-            return {...state, profile : {...state.profile, photos: action.photos }}
+            return {...state, profile: {...state.profile, photos: action.photos}}
         }
 
         case SET_MESSAGE_ERROR:
 
-            return { ...state,
+            return {
+                ...state,
                 messageerror: action.messageerror,
+
+            }
+        case SET_EDITMOD_UPDATE:
+
+            return {
+                ...state,
+                editModeUpdate: action.editModeUpdate,
 
             }
         default:
@@ -78,7 +88,8 @@ export const setUsersProfile = (profile) => ({type: SET_USER_PROFILE, profile})
 export const setStatus = (status) => ({type: SET_STATUS, status})
 export const deletePost = (postId) => ({type: DELETE_POST, postId})
 export const savePhotoSuccess = (photos) => ({type: SAVE_PHOTO_SUCCESS, photos})
-export const setMessageError= (messageerror=null) => ({type: SET_MESSAGE_ERROR, messageerror})
+export const setMessageError = (messageerror) => ({type: SET_MESSAGE_ERROR, messageerror})
+export const setEditModeUpdate = (editModeUpdate) => ({type: SET_EDITMOD_UPDATE, editModeUpdate})
 
 export const getUserProfile = (userId) => async (dispath) => {
 
@@ -121,17 +132,21 @@ export const savePhoto = (file) => async (dispath) => {
 
 }
 export const saveProfile = (profile) => async (dispath, getState) => {
+    dispath(setEditModeUpdate(null))
     const userId = getState().auth.userId
     let response = await profileAPI.saveProfile(profile)
 
     if (response.data.resultCode === 0) {
+        dispath(setEditModeUpdate("Success"))
+        dispath(getUserProfile(userId));
+        dispath(setMessageError(null))
 
-       dispath(getUserProfile(userId));
-    }  else {
-        debugger
+    } else {
+
         let messageerror = response.data.messages.length > 0 ? response.data.messages[0] : "Some error"
         dispath(setMessageError(messageerror))
-        return Promise.reject(messageerror)
+        dispath(setEditModeUpdate("Error"))
+
 
     }
 

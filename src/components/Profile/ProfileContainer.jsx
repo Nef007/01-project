@@ -45,6 +45,7 @@ class ProfileContainer extends React.Component {
                      updateStatus={this.props.updateStatus}
                      savePhoto={this.props.savePhoto}
                      messageerror={this.props.messageerror}
+                     editModeUpdate={this.props.editModeUpdate}
             />
 
         )
@@ -56,7 +57,8 @@ let mapStateToProps = (state) => ({
     profile: state.profilePage.profile,
     status: state.profilePage.status,
     authorizedUserId: state.auth.userId,
-    messageerror: state.profilePage.messageerror
+    messageerror: state.profilePage.messageerror,
+    editModeUpdate: state.profilePage.editModeUpdate
 
 
 });

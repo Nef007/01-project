@@ -1,28 +1,33 @@
 import s from './ProfileInfo.module.css';
 import Preloader from "../../common/preloader/Preloader";
-import ProfileStatus from "./ProfileStatus"
-import ProfileStatusWithHook from "./ProfileStatusWithHook";
 import noavatar from "../../../assets/images/noavatar.jpeg";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import ProfileDataForm from "./ProfileDataForm";
-import Profile from "../Profile";
+import ProfileStatusWithHook from "./ProfileStatusWithHook";
+
 
 const ProfileInfo = (props) => {
 
     let [editMode,setEditMode] =  useState(false);
-    let [status,setStatus] =  useState(props.status);
+    useEffect(() => {
+        debugger;
+        if(props.editModeUpdate === "Success" )setEditMode(false)
 
-        if (!props.profile) {
+    }, [props.editModeUpdate])
+
+
+
+    if (!props.profile) {
             return <Preloader/>
         }
 
 
          const onSubmit = async (values) => {
-       await props.saveProfile(values)
-            setEditMode(false)
+      await  props.saveProfile(values)
+
+
 
     }
-
 
         const onMainPhotoSelected = (e) => {
             if(e.target.files.length) {
