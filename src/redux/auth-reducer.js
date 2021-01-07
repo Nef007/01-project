@@ -38,7 +38,7 @@ let initialState = {
 
 
 export const setAuthUserData= (userId, email, login, isAuth, messageerror) => ({type: SET_USER_DATA, payload: {userId, email, login, isAuth, messageerror}})
-export const setMessageError= (messageerror) => ({type: SET_MESSAGE_ERROR, messageerror})
+export const setMessageErrorAutn= (messageerror) => ({type: SET_MESSAGE_ERROR, messageerror})
 export const getAuthUserData = () => async (dispath) => {
   let response = await authAPI.me()
 
@@ -60,7 +60,7 @@ export const login = (email, password, rememberMe) => async (dispath) => {
         } else {
 
             let messageerror = response.data.messages.length > 0 ? response.data.messages[0] : "Some error"
-           dispath(setMessageError(messageerror))
+           dispath(setMessageErrorAutn(messageerror))
         }
 
 

@@ -88,7 +88,7 @@ export const setUsersProfile = (profile) => ({type: SET_USER_PROFILE, profile})
 export const setStatus = (status) => ({type: SET_STATUS, status})
 export const deletePost = (postId) => ({type: DELETE_POST, postId})
 export const savePhotoSuccess = (photos) => ({type: SAVE_PHOTO_SUCCESS, photos})
-export const setMessageError = (messageerror) => ({type: SET_MESSAGE_ERROR, messageerror})
+export const setMessageErrorProfile = (messageerror) => ({type: SET_MESSAGE_ERROR, messageerror})
 export const setEditModeUpdate = (editModeUpdate) => ({type: SET_EDITMOD_UPDATE, editModeUpdate})
 
 export const getUserProfile = (userId) => async (dispath) => {
@@ -139,12 +139,12 @@ export const saveProfile = (profile) => async (dispath, getState) => {
     if (response.data.resultCode === 0) {
         dispath(setEditModeUpdate("Success"))
         dispath(getUserProfile(userId));
-        dispath(setMessageError(null))
+        dispath(setMessageErrorProfile(null))
 
     } else {
 
         let messageerror = response.data.messages.length > 0 ? response.data.messages[0] : "Some error"
-        dispath(setMessageError(messageerror))
+        dispath(setMessageErrorProfile(messageerror))
         dispath(setEditModeUpdate("Error"))
 
 
