@@ -24,12 +24,20 @@ const ProfileContainer = React.lazy( ()=> import ("./components/Profile/ProfileC
 
 
 class App extends Component {
-
+        catchAllUnhandleErrors =(promiseRejectionEvent) => {
+            alert("Some error occured")
+        }
 
     componentDidMount() {
 
         this.props.initializeApp();
+        window.addEventListener("unhandledrejection", this.catchAllUnhandleErrors);
     }
+
+    componentWillMount() {
+        window.removeEventListener("unhandledrejection", this.catchAllUnhandleErrors);
+    }
+
     render() {
 
         if(!this.props.initialized){
